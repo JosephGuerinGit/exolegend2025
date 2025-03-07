@@ -15,11 +15,6 @@ int x_positions[] = {1, 2, 3, 2, 5};
 int y_positions[] = {6, 6, 6, 8, 10};
 int i=0;
 
-// define a list of x,y positions that I can initialize
-int x_positions[] = {1, 2, 3, 2, 5};
-int y_positions[] = {6, 6, 6, 8, 10};
-int i=0;
-
 int heuristic(int x1, int y1, int x2, int y2) {   // Manhattan distance
     return abs(x1 - x2) + abs(y1 - y2);
 }
@@ -36,10 +31,10 @@ stack<MazeSquare*> defineNewPath(MazeSquare* start ,MazeSquare* goal) {
     // Use stack to store the path
     stack<MazeSquare*> pathStack;
     
-//     while (!openList.empty()) {
-//         Nodes* current = openList.top();
-//         openList.pop();
-//         MazeSquare *Current = current->node;
+    while (!openList.empty()) {
+        Nodes* current = openList.top();
+        openList.pop();
+        MazeSquare *Current = current->node;
         
         // Check if we reached the goal
         if (Current->j == goal->j && Current->i == goal->i) {  
@@ -51,14 +46,14 @@ stack<MazeSquare*> defineNewPath(MazeSquare* start ,MazeSquare* goal) {
             return pathStack;  // Return the stack containing the path
         }
         
-//         current->in_closed_list = true;
+        current->in_closed_list = true;
         
-//         MazeSquare* neighbors[] = {
-//             Current->northSquare,
-//             Current->westSquare,
-//             Current->southSquare,
-//             Current->eastSquare
-//         };
+        MazeSquare* neighbors[] = {
+            Current->northSquare,
+            Current->westSquare,
+            Current->southSquare,
+            Current->eastSquare
+        };
         
         for (int i = 0; i < 4; ++i) {  // Check each neighboring square
             MazeSquare* neighbor = neighbors[i];
@@ -94,38 +89,5 @@ Position getNewPosition(float squareSize) {
     Position centerCoor;
     centerCoor.x = (mazesquare->i + 0.5) * squareSize;
     centerCoor.y = (mazesquare->j + 0.5) * squareSize;
+    return centerCoor;
 }
-
-Position* getNewPosition(MazeSquare* mazesquare, float squareSize){
-    // calculons les coordonnées du centre de cette case
-    Position centerCoor;
-    // pour calculer les coordonnées x et y il faut récupérer les index i et j de la case
-    centerCoor.x = (mazesquare->i + 0.5) * squareSize;
-    centerCoor.y = (mazesquare->j + 0.5) * squareSize;
-}
-
-/*
-int main() {
-    
-    MazeSquare* Start_Node;
-    MazeSquare* Goal_Node;
-
-    Start_Node->i=0+'0';Start_Node->j=0+'0';
-    Start_Node->j=7+'0';Start_Node->j=7+'0';
-
-
-
-    vector<pair<int, int>> path = findPath(Start_Node, Goal_Node);
-    
-    if (!path.empty()) {
-         cout << "Path found:\n";
-    }
-    else {
-        cout << "No path found."" << endl;
-    }
-    delete Start_Node;
-    delete Goal_Node;
-    return 0;
-}
-"""
-
