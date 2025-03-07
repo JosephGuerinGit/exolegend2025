@@ -86,35 +86,3 @@ public:
 };
 
 #endif  // LINKED_LIST_H
-
-int main() {
-    LinkedList list;
-
-    // Create MazeSquare objects dynamically and add them to the list
-    MazeSquare* square1 = new MazeSquare('0', '0');
-    list.push_back(square1);
-
-    MazeSquare* square2 = new MazeSquare('1', '1');
-    list.push_back(square2);
-
-    MazeSquare* square3 = new MazeSquare('2', '2');
-    list.push_back(square3);
-
-    // Print the linked list
-    std::cout << "Linked List: \n";
-    list.printList();
-
-    // Get and print the first and last elements
-    MazeSquare* first = list.getFirst();
-    MazeSquare* last = list.getLast();
-    std::cout << "First element: (" << first->i << ", " << first->j << ")\n";
-    std::cout << "Last element: (" << last->i << ", " << last->j << ")\n";
-
-    // Reverse the list and print again
-    list.reverseList();
-    std::cout << "Reversed List: \n";
-    list.printList();
-
-    return 0;
-}
-

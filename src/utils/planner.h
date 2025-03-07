@@ -1,39 +1,44 @@
-#ifndef PATHFINDING_H
-#define PATHFINDING_H
+#ifndef PLANNER_H
+#define PLANNER_H
 
 #include "gladiator.h"
+#include "chained_list.h"
+#include <iostream>
 #include <vector>
 #include <queue>
 #include <cmath>
+#include <stack>
 #include <algorithm>
 
 using namespace std;
 
-struct Node {
-    int x, y;
+// Node structure used for pathfinding
+struct Nodes {
+    MazeSquare* node;
     int g, h, f;
-    Node* parent;
-    Node(int x, int y, int g, int h, Node* parent = nullptr) 
-         : x(x), y(y), g(g), h(h), f(g + h), parent(parent) {}
+    bool in_closed_list;
+    Nodes* parent;
+
+    Nodes(MazeSquare *node, int g, int h, Nodes* parent = nullptr) 
+        : node(node), g(g), h(h), f(g + h), parent(parent), in_closed_list(false) {}
 };
 
+// CompareNodes for sorting in the priority queue
 struct CompareNodes {
-    bool operator()(const Node* a, const Node* b) {
-        return a->f > b->f;
+    bool operator()(Nodes* a, Nodes* b) {
+        return a->f > b->f; // Higher f value comes last (priority queue sorts in descending order)
     }
 };
 
-class Pathfinding {
-public:
-    static int heuristic(int x1, int y1, int x2, int y2);  // Manhattan distance
-    static vector<pair<int, int>> findPath(const MazeSquare* start, const MazeSquare* goal);
-    static void PrintPath(const vector<pair<int, int>>& path);
-};
+// Heuristic function (Manhattan distance)
+int heuristic(int x1, int y1, int x2, int y2);
+
+// Pathfinding function to find a path between start and goal
+LinkedList defineNewPath(MazeSquare* start, MazeSquare* goal);
 
 
 
-Position getNewPosition();
+// Function to calculate the center position of a MazeSquare
+Position* getNewPosition(MazeSquare* mazesquare, float squareSize);
 
-void defineNewPath(MazeSquare *start_node, MazeSquare *goal_node);
-
-#endif // PATHFINDING_H
+#endif  // PLANNER_H
