@@ -2,43 +2,39 @@
 #define PLANNER_H
 
 #include "gladiator.h"
-#include "chained_list.h"
-#include <iostream>
-#include <vector>
 #include <queue>
-#include <cmath>
 #include <stack>
-#include <algorithm>
 
-using namespace std;
-
-// Node structure used for pathfinding
+// Node structure for the A* search
 struct Nodes {
-    MazeSquare* node;
-    int g, h, f;
-    bool in_closed_list;
-    Nodes* parent;
+    MazeSquare* node;  // Pointer to the MazeSquare
+    int g;  // Cost from the start node
+    int h;  // Heuristic cost to the goal
+    bool in_closed_list;  // Flag to mark if the node is in the closed list
+    Nodes* parent;  // Pointer to the parent node
 
-    Nodes(MazeSquare *node, int g, int h, Nodes* parent = nullptr) 
-        : node(node), g(g), h(h), f(g + h), parent(parent), in_closed_list(false) {}
+    // Constructor for the node
+    Nodes(MazeSquare* n, int gCost, int hCost, Nodes* p = nullptr)
+        : node(n), g(gCost), h(hCost), in_closed_list(false), parent(p) {}
 };
 
-// CompareNodes for sorting in the priority queue
+// Comparator for the priority queue
 struct CompareNodes {
     bool operator()(Nodes* a, Nodes* b) {
-        return a->f > b->f; // Higher f value comes last (priority queue sorts in descending order)
+        return (a->g + a->h) > (b->g + b->h);  // Min-heap based on f = g + h
     }
 };
 
-// Heuristic function (Manhattan distance)
+// Function to calculate the heuristic (Manhattan distance)
 int heuristic(int x1, int y1, int x2, int y2);
 
-// Pathfinding function to find a path between start and goal
-LinkedList defineNewPath(MazeSquare* start, MazeSquare* goal);
+// A* search function that returns the path as a stack
+std::stack<MazeSquare*> defineNewPath(MazeSquare* start, MazeSquare* goal);
 
+// Function to get a new MazeSquare (dummy example)
+MazeSquare* getNewSquare();
 
-
-// Function to calculate the center position of a MazeSquare
-Position* getNewPosition(MazeSquare* mazesquare, float squareSize);
+// Function to calculate the position based on the square size
+Position getNewPosition(float squareSize);
 
 #endif  // PLANNER_H
