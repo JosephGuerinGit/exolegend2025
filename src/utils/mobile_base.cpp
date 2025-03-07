@@ -1,5 +1,4 @@
 #include "gladiator.h"
-// Gladiator *gladiator;
 
 float kw = 1.2;
 float kv = 1.f;
@@ -144,12 +143,6 @@ class Vector2
     float _x, _y;
 };
 
-Gladiator *gladiator;
-
-void reset()
-{
-}
-
 inline float moduloPi(float a) // return angle in [-pi; pi]
 {
     return (a < 0.0) ? (std::fmod(a - M_PI, 2 * M_PI) + M_PI) : (std::fmod(a + M_PI, 2 * M_PI) - M_PI);
@@ -201,28 +194,4 @@ inline bool aim(Gladiator *gladiator, const Vector2 &target, bool showLogs)
     }
 
     return targetReached;
-}
-
-void setup()
-{
-    // instanciation de l'objet gladiator
-    gladiator = new Gladiator();
-    // enregistrement de la fonction de reset qui s'éxecute à chaque fois avant qu'une partie commence
-    gladiator->game->onReset(&reset);
-}
-
-void loop()
-{
-    if (gladiator->game->isStarted())
-    {
-        static unsigned i = 0;
-        bool showLogs = (i % 50 == 0);
-
-        if (aim(gladiator, {1.5, 1.5}, showLogs))
-        {
-            gladiator->log("Cible atteinte !");
-        }
-        i++;
-    }
-    delay(10); // boucle à 100Hz
 }
