@@ -34,11 +34,11 @@ struct CompareNodes {
 int heuristic(int x1, int y1, int x2, int y2);
 
 // Pathfinding function to find a path between start and goal
-LinkedList defineNewPath(MazeSquare* start, MazeSquare* goal);
+void defineNewPath(MazeSquare* start, MazeSquare* goal);
 
 
 
 // Function to calculate the center position of a MazeSquare
-Position* getNewPosition(MazeSquare* mazesquare, float squareSize);
+Position getNewPosition(float squareSize);
 
 #endif  // PLANNER_H

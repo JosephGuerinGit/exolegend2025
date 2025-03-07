@@ -17,7 +17,9 @@ void run(Gladiator *gladiator) {
     while (true) {                              // Demander le prochain point à atteindre
         update_strategy(gladiator);             // ICI problème, il faut pas actualiser toute la stratégie à chaque fois
         Position goal = getNewPosition(gladiator->maze->getSquareSize());
+        gladiator->log("x %f, y %f", goal.x, goal.y);
 
+        is_moving = true;
         while (is_moving) {                     // Redemander le prochain point à atteindre
             Position myPosition = gladiator->robot->getData().position;
             is_moving = !goTo(goal, myPosition, gladiator);

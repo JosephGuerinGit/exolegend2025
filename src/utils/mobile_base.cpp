@@ -1,7 +1,7 @@
 #include "gladiator.h"
 
-float kw = 1.2;
-float kv = 1.f;
+float kw = 2.2;
+float kv = 10.f;
 float wlimit = 3.f;
 float vlimit = 0.6;
 float erreurPos = 0.07;
@@ -42,6 +42,8 @@ bool goTo(Position cons, Position pos, Gladiator *gladiator)
     gladiator->control->setWheelSpeed(WheelAxis::RIGHT, consvr, false); // GFA 3.2.1
     gladiator->control->setWheelSpeed(WheelAxis::LEFT, consvl, false);  // GFA 3.2.1
 
+    // float squaresiz = gladiator->maze->getSquareSize();
+    // return (gladiator->maze->getSquare((int) ((cons.x - squaresiz/2)/squaresiz), (int) ((cons.y - squaresiz/2)/squaresiz))->possession == gladiator->robot->getData().teamId);
     return (d <= erreurPos);
 }
 
