@@ -1,4 +1,5 @@
 #include "gladiator.h"
+#include "chained_list.h"
 #include "planner.h"
 #include <iostream>
 #include <vector>
@@ -9,12 +10,11 @@
 
 using namespace std;
 
-Gladiator *gladiator;
-
 
 struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare)
     MazeSquare* node;
     int g, h, f;
+    bool in_closed_list;
     Node* parent;
     Node(MazeSquare* node, int g, int h, Node* parent = nullptr) 
          : node(node), g(g), h(h), f(g + h), parent(parent) {}
@@ -34,36 +34,35 @@ int heuristic(int x1, int y1, int x2, int y2) {   //distance de Manhattan
 
 
 
-vector<pair<int, int>> findPath(MazeSquare* start ,MazeSquare*goal) {
+LinkedList defineNewPath(MazeSquare* start ,MazeSquare*goal) {
     int rows = 12, cols = 12;
     priority_queue<Node*, vector<Node*>, CompareNodes> openList;    //openlist
-    vector<vector<bool>> closedList(rows, vector<bool>(cols, false));  //closed list
-    vector<vector<Node*>> allNodes(rows, vector<Node*>(cols, nullptr));  //vector to avoid having multiple nodes created for 1 cell
+    Node* allNodes[rows][cols] = {nullptr};  // All elements initially are not created
     
     Node* startNode = new Node(start, 0, heuristic(start->j, start->i, goal->j, goal->i));
     openList.push(startNode);
     allNodes[start->j-'0'][start->i-'0'] = startNode;
     
     
-    
     while (!openList.empty()) {
         Node* current = openList.top();
         openList.pop();
-        const MazeSquare *Current = current->node;
+        MazeSquare *Current = current->node;
         
         //check if new pointer
 
         if (Current->j == goal->j && Current->i == goal->i) {  //if we reached the goal
+            LinkedList path;            
             vector<pair<int, int>> path;     //initialization of the path vector
-            while (current) {
-                path.push_back({Current->j-'0', Current->i-'0'});
-                current = current->parent;
+            while (Current) {
+                path.push_back(Current);
+                Current = current->parent->node;
             }
-            reverse(path.begin(), path.end());    //this will need to be taken care of
+            path.reverseList(); // to take care of
             return path;
         }
         
-//         closedList[current->x][current->y] = true;
+        current->in_closed_list = true;
         
         MazeSquare* neighbors[] = {
             Current->northSquare,
@@ -78,7 +77,7 @@ vector<pair<int, int>> findPath(MazeSquare* start ,MazeSquare*goal) {
             int x= neighbor->j-'0';
             int y= neighbor->i-'0';
 
-            if (x >= 0 && x < rows && y >= 0 && y < cols && neighbor!=nullptr && !closedList[x][y]) {
+            if (x >= 0 && x < rows && y >= 0 && y < cols && neighbor!=nullptr && !current->in_closed_list) {
                 int newG = current->g + 1;
                 if (!allNodes[x][y] || newG < allNodes[x][y]->g) {
                     Node* Neighbor = new Node(neighbor, newG, heuristic(x, y, goal->j, goal->i), current);
@@ -98,6 +97,22 @@ void PrintPath(vector<pair<int, int>> path) {
     }
 }
 
+
+Position* getNewPosition(MazeSquare* mazesquare, float squareSize){
+    // calculons les coordonnées du centre de cette case
+    Position centerCoor;
+    // pour calculer les coordonnées x et y il faut récupérer les index i et j de la case
+    centerCoor.x = (mazesquare->i + 0.5) * squareSize;
+    centerCoor.y = (mazesquare->j + 0.5) * squareSize;
+}
+
+Position* getNewPosition(MazeSquare* mazesquare, float squareSize){
+    // calculons les coordonnées du centre de cette case
+    Position centerCoor;
+    // pour calculer les coordonnées x et y il faut récupérer les index i et j de la case
+    centerCoor.x = (mazesquare->i + 0.5) * squareSize;
+    centerCoor.y = (mazesquare->j + 0.5) * squareSize;
+}
 
 /*
 int main() {
