@@ -6,9 +6,16 @@ int x_positions[] = {1, 2, 3, 4, 5};
 int y_positions[] = {6, 7, 8, 9, 10};
 
 
-void update_planner() {
-    // Update the planner using the state of the game : position of the robot etc.
-    // This function defines the goal the planner should target.
-    Position goal = {x_positions[0], y_positions[0]};
-    // goal = 
+void update_strategy(Gladiator *gladiator) {
+    // Retrieve the nearest square (const pointer)
+    const MazeSquare *nearestSquare = gladiator->maze->getNearestSquare();
+    const MazeSquare *eastSquare = gladiator->maze->getNearestSquare()->eastSquare;
+    // const MazeSquare *eastSquare = *nearestSquare->eastSquare;
+
+    // Create a modifiable copy
+    MazeSquare mySquare = *nearestSquare;
+    MazeSquare myEastSquare = *eastSquare;
+
+    // Pass pointers to defineNewPath
+    defineNewPath(&mySquare, &myEastSquare);
 }

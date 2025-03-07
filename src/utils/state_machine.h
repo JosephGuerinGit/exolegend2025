@@ -1,3 +1,5 @@
+#include "gladiator.h"
+
 bool isMoving();
 
-void run();
+void run(Gladiator *gladiator);

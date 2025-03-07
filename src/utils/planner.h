@@ -30,4 +30,10 @@ public:
     static void PrintPath(const vector<pair<int, int>>& path);
 };
 
+
+
+Position getNewPosition();
+
+void defineNewPath(MazeSquare *start_node, MazeSquare *goal_node);
+
 #endif // PATHFINDING_H
