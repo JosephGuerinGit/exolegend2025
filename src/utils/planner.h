@@ -32,7 +32,7 @@ public:
 
 
 
-Position getNewPosition();
+Position getNewPosition(float squareSize);
 
 void defineNewPath(MazeSquare *start_node, MazeSquare *goal_node);
 

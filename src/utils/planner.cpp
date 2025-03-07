@@ -99,7 +99,7 @@ void PrintPath(vector<pair<int, int>> path) {
 }
 
 
-"""
+/*
 int main() {
     
     MazeSquare* Start_Node;
@@ -122,5 +122,5 @@ int main() {
     delete Goal_Node;
     return 0;
 }
-"""
+*/
 
