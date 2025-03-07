@@ -15,7 +15,7 @@ double reductionAngle(double x)
     return x - PI;
 }
 
-void goTo(Position cons, Position pos, Gladiator *gladiator)
+bool goTo(Position cons, Position pos, Gladiator *gladiator)
 {
     double consvl, consvr;
     double dx = cons.x - pos.x;
@@ -42,6 +42,8 @@ void goTo(Position cons, Position pos, Gladiator *gladiator)
 
     gladiator->control->setWheelSpeed(WheelAxis::RIGHT, consvr, false); // GFA 3.2.1
     gladiator->control->setWheelSpeed(WheelAxis::LEFT, consvl, false);  // GFA 3.2.1
+
+    return (d <= erreurPos);
 }
 
 void reset_mobile_base(Gladiator *gladiator)
