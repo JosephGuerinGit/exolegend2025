@@ -12,12 +12,12 @@ using namespace std;
 Gladiator *gladiator;
 
 
-struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare )
-    int x, y;
+struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare)
+    MazeSquare* node;
     int g, h, f;
     Node* parent;
-    Node(int x, int y, int g, int h, Node* parent = nullptr) 
-         : x(x), y(y), g(g), h(h), f(g + h), parent(parent) {}
+    Node(MazeSquare* node, int g, int h, Node* parent = nullptr) 
+         : node(node), g(g), h(h), f(g + h), parent(parent) {}
 };
 
 
@@ -34,13 +34,13 @@ int heuristic(int x1, int y1, int x2, int y2) {   //distance de Manhattan
 
 
 
-vector<pair<int, int>> findPath(const MazeSquare* start ,const MazeSquare*goal) {
+vector<pair<int, int>> findPath(MazeSquare* start ,MazeSquare*goal) {
     int rows = 12, cols = 12;
     priority_queue<Node*, vector<Node*>, CompareNodes> openList;    //openlist
     vector<vector<bool>> closedList(rows, vector<bool>(cols, false));  //closed list
     vector<vector<Node*>> allNodes(rows, vector<Node*>(cols, nullptr));  //vector to avoid having multiple nodes created for 1 cell
     
-    Node* startNode = new Node(start->j-'0', start->i-'0', 0, heuristic(start->j, start->i, goal->j, goal->i));
+    Node* startNode = new Node(start, 0, heuristic(start->j, start->i, goal->j, goal->i));
     openList.push(startNode);
     allNodes[start->j-'0'][start->i-'0'] = startNode;
     
@@ -49,15 +49,14 @@ vector<pair<int, int>> findPath(const MazeSquare* start ,const MazeSquare*goal) 
     while (!openList.empty()) {
         Node* current = openList.top();
         openList.pop();
-        unsigned char i = current->y+'0', j = current->x+'0';
-        const MazeSquare *Current = gladiator->maze->getSquare(i,j);
+        const MazeSquare *Current = current->node;
         
         //check if new pointer
 
-        if (current->x == goal->j-'0' && current->y == goal->i-'0') {  //if we reached the goal
+        if (Current->j == goal->j && Current->i == goal->i) {  //if we reached the goal
             vector<pair<int, int>> path;     //initialization of the path vector
             while (current) {
-                path.push_back({current->x, current->y});
+                path.push_back({Current->j-'0', Current->i-'0'});
                 current = current->parent;
             }
             reverse(path.begin(), path.end());    //this will need to be taken care of
@@ -82,9 +81,9 @@ vector<pair<int, int>> findPath(const MazeSquare* start ,const MazeSquare*goal) 
             if (x >= 0 && x < rows && y >= 0 && y < cols && neighbor!=nullptr && !closedList[x][y]) {
                 int newG = current->g + 1;
                 if (!allNodes[x][y] || newG < allNodes[x][y]->g) {
-                    Node* Neighbor = new Node(x, y, newG, heuristic(x, y, goal->j, goal->i), current);
+                    Node* Neighbor = new Node(neighbor, newG, heuristic(x, y, goal->j, goal->i), current);
                     openList.push(Neighbor);       //on donne un MazeSquare alors qu'on veut 
-                    allNodes[x][y] = Neighbor;
+                    allNodes[x][y] = Neighbor;  
                 }
             }
         }
@@ -100,7 +99,7 @@ void PrintPath(vector<pair<int, int>> path) {
 }
 
 
-
+"""
 int main() {
     
     MazeSquare* Start_Node;
@@ -114,14 +113,14 @@ int main() {
     vector<pair<int, int>> path = findPath(Start_Node, Goal_Node);
     
     if (!path.empty()) {
-         cout << "Path found:\n";
+         cout << 'Path found:\n';
     }
     else {
-        cout << "No path found." << endl;
+        cout << 'No path found.' << endl;
     }
     delete Start_Node;
     delete Goal_Node;
     return 0;
 }
-
+"""
 
