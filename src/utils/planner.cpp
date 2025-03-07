@@ -1,4 +1,5 @@
 #include "gladiator.h"
+#include "planner.h"
 #include <iostream>
 #include <vector>
 #include <queue>
