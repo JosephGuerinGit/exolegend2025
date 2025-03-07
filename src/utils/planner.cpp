@@ -1,101 +1,101 @@
-#include "gladiator.h"
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <cmath>
-#include <stack>
+// #include "gladiator.h"
+// #include <iostream>
+// #include <vector>
+// #include <queue>
+// #include <cmath>
+// #include <stack>
 
-using namespace std;
+// using namespace std;
 
-Gladiator *gladiator;
-
-
-struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare )
-    int x, y;
-    int g, h, f;
-    Node* parent;
-    Node(int x, int y, int g, int h, Node* parent = nullptr) 
-        : x(x), y(y), g(g), h(h), f(g + h), parent(parent) {}
-};
+// Gladiator *gladiator;
 
 
-struct CompareNodes {     //compare le f_score de a et b (et retourne true si a>b)
-    bool operator()(const Node* a, const Node* b) {
-        return a->f > b->f;
-    }
-};
-
-int heuristic(int x1, int y1, int x2, int y2) {   //distance de Manhattan
-    return abs(x1 - x2) + abs(y1 - y2);
-}
-
-//vector<pair<int, int>> findPath(vector<vector<int>>& maze, pair<int, int> start, pair<int, int> goal) {
+// struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare )
+//     int x, y;
+//     int g, h, f;
+//     Node* parent;
+//     Node(int x, int y, int g, int h, Node* parent = nullptr) 
+//         : x(x), y(y), g(g), h(h), f(g + h), parent(parent) {}
+// };
 
 
-vector<pair<int, int>> findPath(MazeSquare* start ,MazeSquare*goal) {
+// struct CompareNodes {     //compare le f_score de a et b (et retourne true si a>b)
+//     bool operator()(const Node* a, const Node* b) {
+//         return a->f > b->f;
+//     }
+// };
+
+// int heuristic(int x1, int y1, int x2, int y2) {   //distance de Manhattan
+//     return abs(x1 - x2) + abs(y1 - y2);
+// }
+
+// //vector<pair<int, int>> findPath(vector<vector<int>>& maze, pair<int, int> start, pair<int, int> goal) {
+
+
+// vector<pair<int, int>> findPath(MazeSquare* start ,MazeSquare*goal) {
     
-    int rows = 12, cols = 12;
-    priority_queue<Node*, vector<Node*>, CompareNodes> openList;    //openlist
-    vector<vector<bool>> closedList(rows, vector<bool>(cols, false));  //closed list
-    vector<vector<Node*>> allNodes(rows, vector<Node*>(cols, nullptr));  //vector to avoid having multiple nodes created for 1 cell
+//     int rows = 12, cols = 12;
+//     priority_queue<Node*, vector<Node*>, CompareNodes> openList;    //openlist
+//     vector<vector<bool>> closedList(rows, vector<bool>(cols, false));  //closed list
+//     vector<vector<Node*>> allNodes(rows, vector<Node*>(cols, nullptr));  //vector to avoid having multiple nodes created for 1 cell
     
-    Node* startNode = new Node(start.first, start.second, 0, heuristic(start.first, start.second, goal.first, goal.second));
-    openList.push(startNode);
-    allNodes[start.first][start.second] = startNode;
+//     Node* startNode = new Node(start.first, start.second, 0, heuristic(start.first, start.second, goal.first, goal.second));
+//     openList.push(startNode);
+//     allNodes[start.first][start.second] = startNode;
     
-    int dx[] = {-1, 1, 0, 0};     //directions around the current node
-    int dy[] = {0, 0, -1, 1};
+//     int dx[] = {-1, 1, 0, 0};     //directions around the current node
+//     int dy[] = {0, 0, -1, 1};
     
-    while (!openList.empty()) {
-        Node* current = openList.top();
-        openList.pop();
+//     while (!openList.empty()) {
+//         Node* current = openList.top();
+//         openList.pop();
         
-        if (current->x == goal.first && current->y == goal.second) {  //if we reached the goal
-            vector<pair<int, int>> path;     //initialization of the path vector
-            while (current) {
-                path.push_back({current->x, current->y});
-                current = current->parent;
-            }
-            reverse(path.begin(), path.end());    //this will need to be taken care of
-            return path;
-        }
+//         if (current->x == goal.first && current->y == goal.second) {  //if we reached the goal
+//             vector<pair<int, int>> path;     //initialization of the path vector
+//             while (current) {
+//                 path.push_back({current->x, current->y});
+//                 current = current->parent;
+//             }
+//             reverse(path.begin(), path.end());    //this will need to be taken care of
+//             return path;
+//         }
         
-        closedList[current->x][current->y] = true;
+//         closedList[current->x][current->y] = true;
         
-        for (int i = 0; i < 4; ++i) {
-            int nx = current->x + dx[i], ny = current->y + dy[i];
+//         for (int i = 0; i < 4; ++i) {
+//             int nx = current->x + dx[i], ny = current->y + dy[i];
             
-            if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && maze[nx][ny] == 0 && !closedList[nx][ny]) {
-                int newG = current->g + 1;
-                if (!allNodes[nx][ny] || newG < allNodes[nx][ny]->g) {
-                    Node* neighbor = new Node(nx, ny, newG, heuristic(nx, ny, goal.first, goal.second), current);
-                    openList.push(neighbor);
-                    allNodes[nx][ny] = neighbor;
-                }
-            }
-        }
-    }
-    return {};
-}
+//             if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && maze[nx][ny] == 0 && !closedList[nx][ny]) {
+//                 int newG = current->g + 1;
+//                 if (!allNodes[nx][ny] || newG < allNodes[nx][ny]->g) {
+//                     Node* neighbor = new Node(nx, ny, newG, heuristic(nx, ny, goal.first, goal.second), current);
+//                     openList.push(neighbor);
+//                     allNodes[nx][ny] = neighbor;
+//                 }
+//             }
+//         }
+//     }
+//     return {};
+// }
 
 
 
-int main() {
+// int main() {
     
     
-    pair<int, int> start = {0, 0};
-    pair<int, int> goal = {9, 9};
+//     pair<int, int> start = {0, 0};
+//     pair<int, int> goal = {9, 9};
     
-    vector<pair<int, int>> path = findPath(maze, start, goal);
+//     vector<pair<int, int>> path = findPath(maze, start, goal);
     
-    if (!path.empty()) {
-        cout << "Path found:\n";
+//     if (!path.empty()) {
+//         cout << "Path found:\n";
         
-    } else {
-        cout << "No path found." << endl;
-    }
+//     } else {
+//         cout << "No path found." << endl;
+//     }
     
-    return 0;
-}
+//     return 0;
+// }
 
 

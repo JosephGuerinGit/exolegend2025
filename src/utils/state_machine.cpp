@@ -1,6 +1,19 @@
-// define a list of x,y positions that I can initialize
+#include "utils/strategy.h"
+#include "utils/planner.h"
 
-int x_positions[] = {1, 2, 3, 4, 5};
-int y_positions[] = {6, 7, 8, 9, 10};
+bool is_moving = false;
 
-// define a StateMachine 
+void reset_state_machine(){
+    // reset state machine
+    is_moving = false;
+}
+
+bool isMoving() {
+    return true;
+}
+
+void run() {
+    while (true) {
+
+    }
+}
