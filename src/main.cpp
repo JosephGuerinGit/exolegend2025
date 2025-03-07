@@ -5,6 +5,8 @@
 #include "utils/state_machine.h"
 #include "utils/strategy.h"
 
+//hello, tis is me
+
 
 Gladiator *gladiator;
 void reset();
