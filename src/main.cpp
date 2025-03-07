@@ -29,6 +29,8 @@ void loop()
     { // tester si un match à déjà commencé
         // code de votre stratégie
         gladiator->log("Hello world - Game Started"); // GFA 4.5.1
+
+        
     }
     else
     {
