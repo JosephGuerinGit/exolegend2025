@@ -88,6 +88,14 @@ Position* getNewPosition(float squareSize){
     centerCoor.y = (mazesquare->j + 0.5) * squareSize;
 }
 
+Position* getNewPosition(MazeSquare* mazesquare, float squareSize){
+    // calculons les coordonnées du centre de cette case
+    Position centerCoor;
+    // pour calculer les coordonnées x et y il faut récupérer les index i et j de la case
+    centerCoor.x = (mazesquare->i + 0.5) * squareSize;
+    centerCoor.y = (mazesquare->j + 0.5) * squareSize;
+}
+
 /*
 int main() {
     
@@ -110,4 +118,6 @@ int main() {
     delete Start_Node;
     delete Goal_Node;
     return 0;
-}*/
+}
+"""
+
