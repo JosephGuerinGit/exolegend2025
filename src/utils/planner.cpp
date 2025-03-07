@@ -6,31 +6,31 @@
 #include <stack>
 #include <algorithm>
 
- using namespace std;
+using namespace std;
 
- Gladiator *gladiator;
+Gladiator *gladiator;
 
 
- struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare )
+struct Node {   //utiliser ici le struct MazeSquare (et rajouter dans mazesquare )
     int x, y;
     int g, h, f;
     Node* parent;
     Node(int x, int y, int g, int h, Node* parent = nullptr) 
          : x(x), y(y), g(g), h(h), f(g + h), parent(parent) {}
+};
+
+
+struct CompareNodes {     //compare le f_score de a et b (et retourne true si a>b)
+    bool operator()(const Node* a, const Node* b) {
+        return a->f > b->f;
+    }
  };
 
+int heuristic(int x1, int y1, int x2, int y2) {   //distance de Manhattan
+    return abs(x1 - x2) + abs(y1 - y2);
+}
 
- struct CompareNodes {     //compare le f_score de a et b (et retourne true si a>b)
-     bool operator()(const Node* a, const Node* b) {
-         return a->f > b->f;
-     }
- };
 
- int heuristic(int x1, int y1, int x2, int y2) {   //distance de Manhattan
-     return abs(x1 - x2) + abs(y1 - y2);
- }
-
-vector<pair<int, int>> findPath(vector<vector<int>>& maze, pair<int, int> start, pair<int, int> goal) {
 
 
 vector<pair<int, int>> findPath(const MazeSquare* start ,const MazeSquare*goal) {
@@ -100,7 +100,7 @@ void PrintPath(vector<pair<int, int>> path) {
 
 
 
-// int main() {
+int main() {
     
     MazeSquare* Start_Node;
     MazeSquare* Goal_Node;
@@ -112,10 +112,10 @@ void PrintPath(vector<pair<int, int>> path) {
 
     vector<pair<int, int>> path = findPath(Start_Node, Goal_Node);
     
-//     if (!path.empty()) {
-//         cout << "Path found:\n";
-        
-    } else {
+    if (!path.empty()) {
+         cout << "Path found:\n";
+    }
+    else {
         cout << "No path found." << endl;
     }
     delete Start_Node;
