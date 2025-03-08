@@ -29,7 +29,7 @@ struct CompareNodes {
 int heuristic(int x1, int y1, int x2, int y2);
 
 // A* search function that returns the path as a stack
-std::stack<MazeSquare*> defineNewPath(MazeSquare* start, MazeSquare* goal);
+void defineNewPath(MazeSquare* start, MazeSquare* goal);
 
 // Function to get a new MazeSquare (dummy example)
 MazeSquare* getNewSquare();

@@ -4,7 +4,7 @@
 #include "utils/planner.h"
 #include "utils/state_machine.h"
 #include "utils/strategy.h"
-
+#include <stack>
 
 
 Gladiator *gladiator;

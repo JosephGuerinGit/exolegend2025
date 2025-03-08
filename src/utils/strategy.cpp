@@ -11,7 +11,8 @@ void update_strategy(Gladiator *gladiator) {
 
     // Create a modifiable copy
     MazeSquare mySquare = *nearestSquare;
-    MazeSquare myEastSquare = *eastSquare;
+    MazeSquare myEastSquare = *gladiator->maze->getSquare(10,10);
+    // MazeSquare myEastSquare = *eastSquare;
 
     // Pass pointers to defineNewPath
     defineNewPath(&mySquare, &myEastSquare);

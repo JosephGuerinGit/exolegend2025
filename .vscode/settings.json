@@ -55,6 +55,8 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "queue": "cpp"
-    }
+        "queue": "cpp",
+        "stack": "cpp"
+    },
+    "C_Cpp.dimInactiveRegions": false
 }
