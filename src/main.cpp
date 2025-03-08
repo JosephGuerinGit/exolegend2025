@@ -3,6 +3,7 @@
 #include "Asservissement/Asservissement.h"
 #include "GameData/GameData.h"
 #include "Strategy/Strategy.h"
+#include "Combat/Combat.h"
 
 Gladiator *gladiator;
 GameState *game;
@@ -62,3 +63,5 @@ void loop()
         // robot_state_machine->machine();
     }
 }
+
+
