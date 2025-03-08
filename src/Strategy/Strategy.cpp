@@ -115,14 +115,14 @@ void StateMachine::strategy()
         square->eastSquare, square->westSquare, square};
     int sum=0;
 
-    for (int dir = 0; dir < 5; dir++){
+    for (int dir = 0; dir < 4; dir++){
         if (neighbors[dir]==nullptr){    //if we have a wall
             continue;
         }
         if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
             sum+=2;
         }
-        if(neighbors[dir]->possession='0'){   //if colored by the other team
+        if(neighbors[dir]->possession=='0'){   //if colored by the other team
             sum+=1;
         }
     }
@@ -131,7 +131,7 @@ void StateMachine::strategy()
     {
     case State::WAIT:
     {
-        if (number_of_bombs && sum>3)
+        if (number_of_bombs && sum>2)
         {
             game->gladiator->weapon->dropBombs(1);
         }
