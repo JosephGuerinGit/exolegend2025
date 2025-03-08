@@ -21,7 +21,7 @@ float complete_heurisic(Position start, Position target);
 
 SimplePath simpleAStar(Gladiator *gladiator, MazeSquare *current_square, MazeSquare *targer_square);
 
-
+SimplePath simplifyPath(const SimplePath &originalPath);
 
 
 #endif // ASTAR_H
