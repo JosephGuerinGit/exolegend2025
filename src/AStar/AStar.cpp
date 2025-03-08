@@ -1,5 +1,7 @@
 #include "AStar.h"
 #include <math.h>
+
+
 float complete_heurisic(Gladiator *gladiator, MazeSquare *neighbor) // Possession ennemi, donc id de la team, position bombe et explosion
 {
     float bomb_cost = float(neighbor->danger);

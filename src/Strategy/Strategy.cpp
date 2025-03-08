@@ -116,14 +116,13 @@ void StateMachine::strategy()
     int sum=0;
 
     for (int dir = 0; dir < 4; dir++){
-        if (neighbors[dir]==nullptr){    //if we have a wall
-            continue;
-        }
-        if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
-            sum+=2;
-        }
-        if(neighbors[dir]->possession=='0'){   //if colored by the other team
-            sum+=1;
+        if (neighbors[dir]!=nullptr){    //if we have a wall
+            if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
+                sum+=2;
+            }
+            if(neighbors[dir]->possession=='0'){   //if colored by the other team
+                sum+=1;
+            }
         }
     }
     
