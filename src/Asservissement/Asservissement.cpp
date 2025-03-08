@@ -294,6 +294,7 @@ void Asservissement::positionControl(Position targetPos)
             consvr = 0;
             consvl = 0;
             etat_automate_depl = GO_TO_POS;
+            start_time = millis();
             // Serial.println("case ROTATION -> GO_TO_POS\n");
         }
     }
