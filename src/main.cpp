@@ -3,6 +3,7 @@
 #include "Asservissement/Asservissement.h"
 #include "GameData/GameData.h"
 #include "Strategy/Strategy.h"
+#include "Combat/Combat.h"
 
 Gladiator *gladiator;
 GameState *game;
@@ -53,7 +54,7 @@ void loop()
         // gladiator->log("targetpos : %f", motors->getTargetPos().x);
         statemachine->strategy();
 
-        gladiator->log("targetpos : %f", motors->getTargetPos().y);
+        // gladiator->log("targetpos : %f", motors->getTargetPos().y);
 
         if (TempsEchantionnage(TE_MS))
         {
@@ -62,3 +63,5 @@ void loop()
         // robot_state_machine->machine();
     }
 }
+
+
