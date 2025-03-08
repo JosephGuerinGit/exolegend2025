@@ -103,17 +103,37 @@ void StateMachine::strategy()
     bool f_close_max_wall = CloseMaxWall();
     bool bomb = false;
     int number_of_bombs = game->gladiator->weapon->getBombCount();
+    
     // bool f_time_to_explode = TimeToExplode();
 
     // game->gladiator->log("void StateMachine::transition() : Possède une fusée : %d", t_recherche_fusee);
+    RobotData data=game->gladiator->robot->getData();
+    unsigned char robotId = data.id;
+    MazeSquare* square= game->gladiator->maze->getNearestSquare();
+    MazeSquare* neighbors[5] = {
+        square->northSquare, square->southSquare,
+        square->eastSquare, square->westSquare, square};
+    int sum=0;
 
+    for (int dir = 0; dir < 4; dir++){
+        if (neighbors[dir]==nullptr){    //if we have a wall
+            continue;
+        }
+        if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
+            sum+=2;
+        }
+        if(neighbors[dir]->possession=='0'){   //if colored by the other team
+            sum+=1;
+        }
+    }
+    
     switch (currentState)
     {
     case State::WAIT:
     {
-        if (number_of_bombs)
+        if (number_of_bombs && sum>2)
         {
-            game->gladiator->weapon->dropBombs(number_of_bombs);
+            game->gladiator->weapon->dropBombs(1);
         }
 
         if (f_close_max_wall)
