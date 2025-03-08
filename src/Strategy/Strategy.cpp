@@ -130,7 +130,7 @@ void StateMachine::strategy()
     {
     case State::WAIT:
     {
-        if (number_of_bombs && sum>2)
+        if (number_of_bombs && sum>6)
         {
             game->gladiator->weapon->dropBombs(1);
         }
