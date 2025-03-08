@@ -1,10 +1,16 @@
 #include "AStar.h"
-
+#include <math.h>
 float complete_heurisic(Gladiator *gladiator, MazeSquare *neighbor) // Possession ennemi, donc id de la team, position bombe et explosion
 {
     float bomb_cost = float(neighbor->danger);
     float distance_cost = 1;
-    return bomb_cost + distance_cost;
+    RobotData data=gladiator->robot->getData();
+    unsigned char robotId = data.id;
+    float color_code = 0;
+    if(neighbor->possession=='0'){
+        color_code=-1;
+    }
+    return bomb_cost+distance_cost+color_code;
 }
 
 // Simplified A* Implementation
