@@ -63,22 +63,39 @@ bool StateMachine::TimeToExplode()
     return (0);
 }
 
-MazeSquare *StateMachine::getNearestBomb()
+MazeSquare *StateMachine::getBestBomb()
 {
     float min_dist = 1000;
     MazeSquare *current_square = getMazeSquareCoor(game->gladiator->robot->getData().position, game->gladiator);
     MazeSquare *nearest_bomb = nullptr;
-    const int searchRadius = 5; // On ne regarde que dans un carré de 5 cases autour de la position actuelle
+    // const int searchRadius = 5; // On ne regarde que dans un carré de 5 cases autour de la position actuelle
 
-    // Définir les bornes de la recherche en fonction des indices du carré courant
-    uint8_t i_min = (current_square->i >= searchRadius ? current_square->i - searchRadius : 0);
-    uint8_t i_max = (current_square->i + searchRadius < SIZE ? current_square->i + searchRadius : SIZE - 1);
-    uint8_t j_min = (current_square->j >= searchRadius ? current_square->j - searchRadius : 0);
-    uint8_t j_max = (current_square->j + searchRadius < SIZE ? current_square->j + searchRadius : SIZE - 1);
+    // // Définir les bornes de la recherche en fonction des indices du carré courant
+    // uint8_t i_min = (current_square->i >= searchRadius ? current_square->i - searchRadius : 0);
+    // uint8_t i_max = (current_square->i + searchRadius < SIZE ? current_square->i + searchRadius : SIZE - 1);
+    // uint8_t j_min = (current_square->j >= searchRadius ? current_square->j - searchRadius : 0);
+    // uint8_t j_max = (current_square->j + searchRadius < SIZE ? current_square->j + searchRadius : SIZE - 1);
 
-    for (uint8_t i = i_min; i <= i_max; i++)
+    // for (uint8_t i = i_min; i <= i_max; i++)
+    // {
+    //     for (uint8_t j = j_min; j <= j_max; j++)
+    //     {
+    //         MazeSquare *square = game->gladiator->maze->getSquare(i, j);
+    //         if (square->coin.value) // La case contient une bombe (ou coin, selon ta logique)
+    //         {
+    //             float dist = getDistance(current_square, square);
+    //             if (dist < min_dist)
+    //             {
+    //                 min_dist = dist;
+    //                 nearest_bomb = square;
+    //             }
+    //         }
+    //     }
+    // }
+
+    for (uint8_t i = 0; i <= 11; i++)
     {
-        for (uint8_t j = j_min; j <= j_max; j++)
+        for (uint8_t j = 0; j <= 11; j++)
         {
             MazeSquare *square = game->gladiator->maze->getSquare(i, j);
             if (square->coin.value) // La case contient une bombe (ou coin, selon ta logique)
@@ -106,7 +123,6 @@ void StateMachine::strategy()
     
     // bool f_time_to_explode = TimeToExplode();
 
-    // game->gladiator->log("void StateMachine::transition() : Possède une fusée : %d", t_recherche_fusee);
     RobotData data=game->gladiator->robot->getData();
     unsigned char robotId = data.id;
     MazeSquare* square= game->gladiator->maze->getNearestSquare();
@@ -116,19 +132,21 @@ void StateMachine::strategy()
     int sum=0;
 
     for (int dir = 0; dir < 4; dir++){
-        if (neighbors[dir]!=nullptr){    //if we have a wall
-            if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
-                sum+=2;
-            }
-            if(neighbors[dir]->possession=='0'){   //if colored by the other team
-                sum+=1;
-            }
+        if (neighbors[dir]==nullptr)    //if we have a wall
+            continue;
+        
+        if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
+            sum+=2;
         }
+        if(neighbors[dir]->possession=='0'){                                          //if colored by the other team
+            sum+=1;
+        }
+        
     }
     
     switch (currentState)
     {
-    case State::WAIT:
+    case State::WAIT:                           // Cas utilisé pour lâcher les bombes
     {
         if (number_of_bombs && sum>2)
         {
@@ -163,7 +181,7 @@ void StateMachine::strategy()
     }
     break;
 
-    case State::SURVIVAL:
+    case State::SURVIVAL:                       // Cas utilisé pour fuir la limite du terrain
     {
         MazeSquare *current_square = getMazeSquareCoor(game->gladiator->robot->getData().position, game->gladiator);
         int sg_x = 1;
@@ -182,10 +200,10 @@ void StateMachine::strategy()
     }
     break;
 
-    case State::EXPLORE_BOMB:
+    case State::EXPLORE_BOMB:                   // Cas utilisé pour aller chercher une bombe par un goto direct, plus utilisé
     {
         // On cherche où sont les bombes les plus proches et on s'y dirige et on les ramasse puis explose
-        MazeSquare *nearest_bomb = getNearestBomb();
+        MazeSquare *nearest_bomb = getBestBomb();
         game->gotoSquare(nearest_bomb);
         currentState = State::WAIT;
     }
@@ -195,7 +213,7 @@ void StateMachine::strategy()
     {
         // On cherche où sont les bombes les plus proches et on s'y dirige et on les ramasse puis explose
         MazeSquare *current_square = getMazeSquareCoor(game->gladiator->robot->getData().position, game->gladiator); // me donne les distances en mètres
-        MazeSquare *nearest_bomb = getNearestBomb();
+        MazeSquare *nearest_bomb = getBestBomb();
 
         SimplePath path = simpleAStar(game->gladiator, current_square, nearest_bomb);
         if (path.length > 0)
