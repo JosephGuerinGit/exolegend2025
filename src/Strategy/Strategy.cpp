@@ -135,7 +135,7 @@ void StateMachine::strategy()
         if (neighbors[dir]==nullptr)    //if we have a wall
             continue;
         
-        if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=robotId){   //if colored by the other team
+        if(neighbors[dir]->possession!='0' && neighbors[dir]->possession!=game->gladiator->robot->getData().teamId){   //if colored by the other team
             sum+=2;
         }
         if(neighbors[dir]->possession=='0'){                                          //if colored by the other team
@@ -148,9 +148,10 @@ void StateMachine::strategy()
     {
     case State::WAIT:                           // Cas utilisé pour lâcher les bombes
     {
-        if (number_of_bombs && sum>6)
+        if (number_of_bombs && sum>3 && !square->isBomb)
         {
             game->gladiator->weapon->dropBombs(1);
+            sum=0;
         }
 
         if (f_close_max_wall)
